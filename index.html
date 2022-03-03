@@ -66,12 +66,15 @@
     }
     //document.getElementById('fileinput').addEventListener('change', readSingleFile);
     //document.getElementById('button').addEventListener('click', () => {
-        let res = JSON.parse(data)
+        let res = JSON.parse(data).filter((n, i) => i % 10 == 0)
         let rpm = res.map(r => parseInt(r.rpm));
         let tq = res.map(r => parseInt(r.wftlb));
         let stq = res.map(r => parseInt(r.wftlb) - 20);
         let whp = res.map(r => parseInt(r.whp));
         let swhp = res.map(r => parseInt(r.whp) - 50);
+        rpm.unshift(NaN)
+
+
         //console.log(config)
         const config = {
             type: 'line',
@@ -84,13 +87,14 @@
                         yAxisID: 'y',
                         borderColor: 'rgb(255, 51, 51)',
                         cubicInterpolationMode: 'monotone',
-                        tension: .5,
+                        tension: .4,
                     },
                     {
                         label: 'TQ',
                         data: tq,
                         yAxisID: 'y1',
                         borderColor: 'rgb(0, 19, 255)',
+                        tension: .4
                     },
                     {
                         label: 'Stock WHP',
@@ -98,13 +102,14 @@
                         yAxisID: 'y',
                         borderColor: 'rgb(255, 173, 173)',
                         cubicInterpolationMode: 'monotone',
-                        tension: .5,
+                        tension: .4,
                     },
                     {
                         label: 'Stock TQ',
                         data: stq,
                         yAxisID: 'y1',
                         borderColor: 'rgb(178, 183, 255)',
+                        tension: .4
                     },
                     // {
                     //     label: 'RPM (x1000)',
@@ -139,26 +144,26 @@
                         },
                     },
                     y: {
-                        //type: 'linear',
+                        type: 'linear',
                         display: true,
                         title: {
                             display: true,
                             text: 'WHP'
-                        }
+                        },
                         //position: 'left',
-                        // min: 0,
-                        // max: 1000,
+                        suggestedMin: whp[0],
+                        max: Math.ceil(whp[whp.length - 1]/100)*100,
                     },
                     y1: {
-                        //type: 'linear',
+                        type: 'linear',
                         display: true,
                         position: 'right',
                         title: {
                             display: true,
                             text: 'TQ'
                         },
-                        // min: 0,
-                        // max: 1000,
+                        suggestedMin: 0,
+                        suggestedMax: Math.ceil(tq[tq.length - 1]/100)*100,
 
                         // grid line settings
                         grid: {
