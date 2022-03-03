@@ -6,8 +6,10 @@
 </head>
 
 <body>
+    <h4>Peak HP: <p id="php"></p></h4>
+    <h4>Peak TQ: <p id="ptq"></p></h4>
     <div>
-        <canvas id="myChart"></canvas>
+        <canvas id="myChart" style="margin: 10px;"></canvas>
     </div>
     <!-- <input type="file" id="fileinput" /> -->
     <!-- <button id="button">Load</button> -->
@@ -67,9 +69,9 @@
     //document.getElementById('fileinput').addEventListener('change', readSingleFile);
     //document.getElementById('button').addEventListener('click', () => {
         let res = JSON.parse(data).filter((n, i) => i % 10 == 0)
-        let rpm = res.map(r => parseInt(r.rpm));
+        let rpm = res.map(r => parseInt(r.rpm)).map(r => Math.floor(r/100)*100);
         let tq = res.map(r => parseInt(r.wftlb));
-        let stq = res.map(r => parseInt(r.wftlb) - 20);
+        let stq = res.map(r => parseInt(r.wftlb) - 50);
         let whp = res.map(r => parseInt(r.whp));
         let swhp = res.map(r => parseInt(r.whp) - 50);
         rpm.unshift(NaN)
@@ -151,8 +153,8 @@
                             text: 'WHP'
                         },
                         //position: 'left',
-                        suggestedMin: whp[0],
-                        max: Math.ceil(whp[whp.length - 1]/100)*100,
+                        suggestedMin: 0,
+                        max: 700,
                     },
                     y1: {
                         type: 'linear',
@@ -163,7 +165,7 @@
                             text: 'TQ'
                         },
                         suggestedMin: 0,
-                        suggestedMax: Math.ceil(tq[tq.length - 1]/100)*100,
+                        suggestedMax: 700,
 
                         // grid line settings
                         grid: {
