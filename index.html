@@ -80,119 +80,11 @@
     let php = [...whp].sort();
     //console.log(php)
     let ptq = [...tq].sort();
-    rpm.unshift(NaN)
-    // document.getElementById('php').innerText = php[php.length-1]
-    //document.getElementById('ptq').innerText = ptq[ptq.length-1]
-
-    //console.log(config)
-    const config = {
-        type: 'line',
-        data: {
-            labels: rpm,
-            datasets: [
-                {
-                    label: 'WHP',
-                    data: whp,
-                    yAxisID: 'y',
-                    borderColor: 'rgb(255, 51, 51)',
-                    //cubicInterpolationMode: 'monotone',
-                    tension: .4,
-                },
-                {
-                    label: 'TQ',
-                    data: tq,
-                    yAxisID: 'y1',
-                    borderColor: 'rgb(0, 19, 255)',
-                    tension: .4
-                },
-                {
-                    label: 'Stock WHP',
-                    data: swhp,
-                    yAxisID: 'y',
-                    borderColor: 'rgb(255, 173, 173)',
-                    //cubicInterpolationMode: 'monotone',
-                    tension: .4,
-                },
-                {
-                    label: 'Stock TQ',
-                    data: stq,
-                    yAxisID: 'y1',
-                    borderColor: 'rgb(178, 183, 255)',
-                    tension: .4
-                },
-                // {
-                //     label: 'RPM (x1000)',
-                //     data: rpm,
-                //     xAxisID: 'x',
-                //     borderColor: 'rgb(75, 192, 0)',
-                // }
-            ]
-        },
-        options: {
-            responsive: true,
-            interaction: {
-                mode: 'index',
-                intersect: false,
-            },
-            stacked: false,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Dyno'
-                }
-            },
-            legend: {
-                display: false
-            },
-            scales: {
-                x: {
-                    type: 'linear',
-                    display: true,
-                    title: {
-                        display: true,
-                        text: 'RPM'
-                    },
-                },
-                y: {
-                    type: 'linear',
-                    display: true,
-                    title: {
-                        display: true,
-                        text: 'WHP'
-                    },
-                    //position: 'left',
-                    suggestedMin: 0,
-                    max: 1000,
-                },
-                y1: {
-                    type: 'linear',
-                    display: true,
-                    position: 'right',
-                    title: {
-                        display: true,
-                        text: 'TQ'
-                    },
-                    suggestedMin: 0,
-                    suggestedMax: 1000,
-
-                    // grid line settings
-                    grid: {
-                        drawOnChartArea: false, // only want the grid lines for one axis to show up
-                    },
-                },
-            }
-
-        },
-    };
-    // let myChart = new Chart(
-    //     document.getElementById('myChart'),
-    //     config
-    // );
-
-    //});
+    rpm.unshift(0)
     var options = {
         chart: {
-            type: 'line'
+            type: 'line',
+            offsetY: 5,
         },
         stroke: {
             curve: 'smooth',
@@ -263,7 +155,7 @@
 
 <style>
     .test {
-        background-image: url('/logo.png');
+        background-image: url('https://raw.githubusercontent.com/hamza765/dynograph/master/logo.png');
         background-repeat: no-repeat;
         /* background-attachment: fixed; */
         background-position: center;
