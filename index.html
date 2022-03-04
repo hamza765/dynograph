@@ -3,14 +3,19 @@
 <head>
     <title>Dyno Prototype</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
 </head>
 
 <body>
-    <h4>Peak HP: <p id="php"></p></h4>
-    <h4>Peak TQ: <p id="ptq"></p></h4>
+    <h4>Peak HP: <span id="php"></span></h4>
+    <h4>Peak TQ: <span id="ptq"></span></h4>
     <div>
         <canvas id="myChart" style="margin: 10px;"></canvas>
     </div>
+    <br>
+    <br>
+    <div id="chart"></div>
     <!-- <input type="file" id="fileinput" /> -->
     <!-- <button id="button">Load</button> -->
 </body>
@@ -68,119 +73,204 @@
     }
     //document.getElementById('fileinput').addEventListener('change', readSingleFile);
     //document.getElementById('button').addEventListener('click', () => {
-        let res = JSON.parse(data).filter((n, i) => i % 10 == 0)
-        let rpm = res.map(r => parseInt(r.rpm)).map(r => Math.floor(r/100)*100);
-        let tq = res.map(r => parseInt(r.wftlb));
-        let stq = res.map(r => parseInt(r.wftlb) - 50);
-        let whp = res.map(r => parseInt(r.whp));
-        let swhp = res.map(r => parseInt(r.whp) - 50);
-        rpm.unshift(NaN)
+    let res = JSON.parse(data).filter((n, i) => i % 10 == 0)
+    let rpm = res.map(r => parseInt(r.rpm));
+    let tq = res.map(r => parseInt(r.wftlb));
+    let stq = res.map(r => parseInt(r.wftlb) - 50);
+    let whp = res.map(r => parseInt(r.whp));
+    let swhp = res.map(r => parseInt(r.whp) - 50);
+    let php = [...whp].sort();
+    //console.log(php)
+    let ptq = [...tq].sort();
+    rpm.unshift(NaN)
+    // document.getElementById('php').innerText = php[php.length-1]
+    //document.getElementById('ptq').innerText = ptq[ptq.length-1]
 
-
-        //console.log(config)
-        const config = {
-            type: 'line',
-            data: {
-                labels: rpm,
-                datasets: [
-                    {
-                        label: 'WHP',
-                        data: whp,
-                        yAxisID: 'y',
-                        borderColor: 'rgb(255, 51, 51)',
-                        cubicInterpolationMode: 'monotone',
-                        tension: .4,
-                    },
-                    {
-                        label: 'TQ',
-                        data: tq,
-                        yAxisID: 'y1',
-                        borderColor: 'rgb(0, 19, 255)',
-                        tension: .4
-                    },
-                    {
-                        label: 'Stock WHP',
-                        data: swhp,
-                        yAxisID: 'y',
-                        borderColor: 'rgb(255, 173, 173)',
-                        cubicInterpolationMode: 'monotone',
-                        tension: .4,
-                    },
-                    {
-                        label: 'Stock TQ',
-                        data: stq,
-                        yAxisID: 'y1',
-                        borderColor: 'rgb(178, 183, 255)',
-                        tension: .4
-                    },
-                    // {
-                    //     label: 'RPM (x1000)',
-                    //     data: rpm,
-                    //     xAxisID: 'x',
-                    //     borderColor: 'rgb(75, 192, 0)',
-                    // }
-                ]
-            },
-            options: {
-                responsive: true,
-                interaction: {
-                    mode: 'index',
-                    intersect: false,
+    //console.log(config)
+    const config = {
+        type: 'line',
+        data: {
+            labels: rpm,
+            datasets: [
+                {
+                    label: 'WHP',
+                    data: whp,
+                    yAxisID: 'y',
+                    borderColor: 'rgb(255, 51, 51)',
+                    //cubicInterpolationMode: 'monotone',
+                    tension: .4,
                 },
-                stacked: false,
-                plugins: {
+                {
+                    label: 'TQ',
+                    data: tq,
+                    yAxisID: 'y1',
+                    borderColor: 'rgb(0, 19, 255)',
+                    tension: .4
+                },
+                {
+                    label: 'Stock WHP',
+                    data: swhp,
+                    yAxisID: 'y',
+                    borderColor: 'rgb(255, 173, 173)',
+                    //cubicInterpolationMode: 'monotone',
+                    tension: .4,
+                },
+                {
+                    label: 'Stock TQ',
+                    data: stq,
+                    yAxisID: 'y1',
+                    borderColor: 'rgb(178, 183, 255)',
+                    tension: .4
+                },
+                // {
+                //     label: 'RPM (x1000)',
+                //     data: rpm,
+                //     xAxisID: 'x',
+                //     borderColor: 'rgb(75, 192, 0)',
+                // }
+            ]
+        },
+        options: {
+            responsive: true,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+            stacked: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Dyno'
+                }
+            },
+            legend: {
+                display: false
+            },
+            scales: {
+                x: {
+                    type: 'linear',
+                    display: true,
                     title: {
                         display: true,
-                        text: 'Dyno'
-                    }
+                        text: 'RPM'
+                    },
                 },
-                legend: {
-                    display: false
+                y: {
+                    type: 'linear',
+                    display: true,
+                    title: {
+                        display: true,
+                        text: 'WHP'
+                    },
+                    //position: 'left',
+                    suggestedMin: 0,
+                    max: 1000,
                 },
-                scales: {
-                    x: {
+                y1: {
+                    type: 'linear',
+                    display: true,
+                    position: 'right',
+                    title: {
                         display: true,
-                        title: {
-                            display: true,
-                            text: 'RPM'
-                        },
+                        text: 'TQ'
                     },
-                    y: {
-                        type: 'linear',
-                        display: true,
-                        title: {
-                            display: true,
-                            text: 'WHP'
-                        },
-                        //position: 'left',
-                        suggestedMin: 0,
-                        max: 700,
-                    },
-                    y1: {
-                        type: 'linear',
-                        display: true,
-                        position: 'right',
-                        title: {
-                            display: true,
-                            text: 'TQ'
-                        },
-                        suggestedMin: 0,
-                        suggestedMax: 700,
+                    suggestedMin: 0,
+                    suggestedMax: 1000,
 
-                        // grid line settings
-                        grid: {
-                            drawOnChartArea: false, // only want the grid lines for one axis to show up
-                        },
+                    // grid line settings
+                    grid: {
+                        drawOnChartArea: false, // only want the grid lines for one axis to show up
                     },
-                }
+                },
+            }
 
-            },
-        };
-        let myChart = new Chart(
-            document.getElementById('myChart'),
-            config
-        );
+        },
+    };
+    let myChart = new Chart(
+        document.getElementById('myChart'),
+        config
+    );
+
     //});
+    var options = {
+        chart: {
+            type: 'line'
+        },
+        stroke: {
+            curve: 'smooth',
+            lineCap: 'round'
+        },
+        colors: ['#FF0000', '#0300FF', '#FF9A9A', '#9B9AFF' ],
+        series: [
+            {
+                name: 'WHP',
+                data: whp
+            },
+            {
+                name: 'TQ',
+                data: tq
+            },
+            {
+                name: 'Stock WHP',
+                data: swhp
+            },
+            {
+                name: 'STQ',
+                data: stq
+            },
+
+        ],
+        yaxis: [
+            {
+                title: {
+                    text: "Power (HP)"
+                },
+                min: 0,
+                max: 1000,
+                seriesName: 'WHP'
+            },
+            {
+                opposite: true,
+                title: {
+                    text: "Torque (ftlbs)"
+                },
+                min: 0,
+                max: 1000
+            },
+            {
+                seriesName: 'WHP',
+                show: false
+            },
+            {
+                seriesName: 'TQ',
+                show: false
+            },
+            
+        ],
+        xaxis: {
+            categories: rpm,
+            title: {
+                text: 'RPM'
+            },
+            // min: 0,
+            // max: 9000
+        }
+    }
+
+    var chart = new ApexCharts(document.querySelector("#chart"), options);
+
+    chart.render();
+
 </script>
+
+<style>
+    .apexcharts-canvas {
+        background-image: url('https://www.eurocharged.com/wp-content/uploads/2022/03/Eurocharged-logo-copy.png');
+        background-repeat: no-repeat;
+        /* background-attachment: fixed; */
+        background-position: center;
+        
+    }
+</style>
 
 </html>
