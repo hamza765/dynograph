@@ -8,14 +8,12 @@
 </head>
 
 <body>
-    <h4>Peak HP: <span id="php"></span></h4>
-    <h4>Peak TQ: <span id="ptq"></span></h4>
     <div>
-        <canvas id="myChart" style="margin: 10px;"></canvas>
+        <canvas id="myChart"></canvas>
     </div>
     <br>
     <br>
-    <div id="chart"></div>
+    <div class="test"><div id="chart"></div></div>
     <!-- <input type="file" id="fileinput" /> -->
     <!-- <button id="button">Load</button> -->
 </body>
@@ -186,10 +184,10 @@
 
         },
     };
-    let myChart = new Chart(
-        document.getElementById('myChart'),
-        config
-    );
+    // let myChart = new Chart(
+    //     document.getElementById('myChart'),
+    //     config
+    // );
 
     //});
     var options = {
@@ -200,7 +198,7 @@
             curve: 'smooth',
             lineCap: 'round'
         },
-        colors: ['#FF0000', '#0300FF', '#FF9A9A', '#9B9AFF' ],
+        colors: ['#FF0000', '#0300FF', '#FF9A9A', '#9B9AFF'],
         series: [
             {
                 name: 'WHP',
@@ -245,7 +243,7 @@
                 seriesName: 'TQ',
                 show: false
             },
-            
+
         ],
         xaxis: {
             categories: rpm,
@@ -264,12 +262,21 @@
 </script>
 
 <style>
-    .apexcharts-canvas {
-        background-image: url('https://www.eurocharged.com/wp-content/uploads/2022/03/Eurocharged-logo-copy.png');
+    .test {
+        background-image: url('/logo.png');
         background-repeat: no-repeat;
         /* background-attachment: fixed; */
         background-position: center;
-        
+    }
+
+    .test::before {
+        content: "";
+        /* position: absolute;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 0px; */
+        background-color: rgba(0, 0, 0, .25);
     }
 </style>
 
