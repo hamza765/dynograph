@@ -78,8 +78,8 @@
     let stq = res.map(r => parseInt(r.wftlb) - 50);
     let whp = res.map(r => parseInt(r.whp));
     let swhp = res.map(r => parseInt(r.whp) - 50);
-    console.log(whp)
-    
+    let peakhp = Math.max(...whp)
+    let peaktq = Math.max(...tq)
     var options = {
         chart: {
             type: 'line',
@@ -113,7 +113,7 @@
                     text: "Power (HP)"
                 },
                 min: 0,
-                max: 1000,
+                max: (Math.ceil(peakhp/100)*100)+100,
                 seriesName: 'WHP',
                 
             },
@@ -123,7 +123,7 @@
                     text: "Torque (ftlbs)"
                 },
                 min: 0,
-                max: 1000
+                max: (Math.ceil(peaktq/100)*100)+100
             },
             {
                 seriesName: 'WHP',
@@ -142,8 +142,8 @@
                 text: 'RPM'
             },
             // forceNiceScale: true
-            // min: 0,
-            // max: 9000
+            min: 0,
+            max: rpm.length + 1
         }
     }
 
